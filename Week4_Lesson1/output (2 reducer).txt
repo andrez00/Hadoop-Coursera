@@ -1,0 +1,16 @@
+[cloudera@quickstart ~]$ hdfs dfs -cat /user/cloudera/output_new_1/part-00000
+A	1
+Another	1
+Wars	1
+a	1
+ago	1
+episode	1
+far	2
+in	1
+of	1
+time	1
+[cloudera@quickstart ~]$ hdfs dfs -cat /user/cloudera/output_new_1/part-00001
+Star	1
+away	1
+galaxy	1
+long	1

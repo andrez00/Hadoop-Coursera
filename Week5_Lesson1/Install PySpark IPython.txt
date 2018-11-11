@@ -1,0 +1,7 @@
+In the version ' cloudera-quickstart-vm-5.13.0-0-virtualbox' easy_install does not work.
+In order to install IPython, I first had to install pip: $sudo yum install python-pip
+And after that I could install python: $sudo pip install ipython==1.2.1
+
+PYSPARK_DRIVER_PYTHON=ipython pyspark
+sc.version
+#Result: u'1.6.0'

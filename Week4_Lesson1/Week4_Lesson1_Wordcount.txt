@@ -1,0 +1,53 @@
+#Running Wordcount with Hadoop streaming, using Python code
+
+gedit wordcount_mapper.py
+
+gedit wordcount_reducer.py
+
+more wordcount_mapper.py
+
+more wordcount_reducer.py
+
+chmod +x wordcount_mapper.py
+
+chmod +x wordcount_reducer.py
+
+pwd (/home/cloudera)
+
+echo "A long time ago in a galaxy far far away" > /home/cloudera/testfile1
+ 
+echo "Another episode of Star Wars" > /home/cloudera/testfile2
+
+hdfs dfs -mkdir /user/cloudera/input
+
+hdfs dfs -put /home/cloudera/testfile1 /user/cloudera/input
+
+hdfs dfs -put /home/cloudera/testfile2 /user/cloudera/input
+
+hdfs dfs -ls /user/cloudera/input
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+   -input /user/cloudera/input \
+   -output /user/cloudera/output_new \
+   -mapper /home/cloudera/wordcount_mapper.py \
+   -reducer /home/cloudera/wordcount_reducer.py
+   
+   
+ hdfs dfs -cat /user/cloudera/output_new/part-00000
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+   -input /user/cloudera/input \
+   -output /user/cloudera/output_new_0 \
+   -mapper /home/cloudera/wordcount_mapper.py \
+   -reducer /home/cloudera/wordcount_reducer.py \
+   -numReduceTasks 0
+   
+ hdfs dfs -getmerge /user/cloudera/output_new_0/* wordcount_num0_output.txt
+ 
+ hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+   -input /user/cloudera/input \
+   -output /user/cloudera/andre_new_1 \
+   -mapper /home/cloudera/wordcount_mapper.py \
+   -reducer /home/cloudera/wordcount_reducer.py \
+   -numReduceTasks 2
+ 

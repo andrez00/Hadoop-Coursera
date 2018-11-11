@@ -1,0 +1,4 @@
+7. Question 7
+The assignment asked you to run with 2 reducers. When you use 2 reducers instead of 1 reducer, what is the difference in global sort order?
+
+With 1 reducer, but not 2 reducers, the word counts are in global sort order by word.

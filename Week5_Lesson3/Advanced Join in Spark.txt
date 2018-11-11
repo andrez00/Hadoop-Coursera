@@ -1,0 +1,50 @@
+show_views_file = sc.textFile("/user/cloudera/input/join2_gennum?.txt")
+show_views_file.take(2)
+#Result: [u'Hourly_Sports,21', u'PostModern_Show,38']
+
+show_channel_file = sc.textFile("/user/cloudera/input/join2_genchan?.txt")
+show_channel_file.take(2)
+#Result: [u'Hourly_Sports,DEF', u'Baked_News,BAT']
+
+#Parse shows files
+def split_show_views(line):
+	lines=line.split(',')
+	show=lines[0]
+	views=lines[1]
+	return (show, int(views))
+show_views = show_views_file.map(split_show_views)
+
+#Parse channel files
+def split_show_channel(line):
+	lines=line.split(',')
+	show=lines[0]
+	channel=lines[1]
+	return (show, channel)
+show_channel = show_channel_file.map(split_show_channel)
+
+	
+#Join the 2 datasets
+joined_dataset = show_channel.join(show_views)
+joined_dataset.collect()
+joined_dataset.take(2)
+#Result: [(u'PostModern_Cooking', (u'DEF', 1038)), (u'PostModern_Cooking', (u'DEF', 415))]
+
+#Extract channel as key
+def extract_channel_views(show_channel_views): 
+	show=show_channel_views[0]
+	channelviews=show_channel_views[1]
+	channel=channelviews[0]
+	views=channelviews[1]
+	return (channel,views)
+
+channel_views = joined_dataset.map(extract_channel_views)
+channel_views.take(2)	
+#Result:  [(u'DEF', 1038), (u'DEF', 415)]
+
+#Sum across all channels
+def sum_views(a, b):
+	return a + b
+channel_sum_views = channel_views.reduceByKey(sum_views)
+channel_sum_views.take(2)
+#Result: [(u'XYZ', 5208016), (u'DEF', 8032799)]
+

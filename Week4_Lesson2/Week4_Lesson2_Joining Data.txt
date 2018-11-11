@@ -1,0 +1,19 @@
+#Exercise in Joining data with streaming using Python code
+
+#PART 1
+chmod +x join1_mapper.py 
+chmod +x join1_reducer.py
+
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+   -input /user/cloudera/input_join1 \
+   -output /user/cloudera/output_join1 \   
+   -mapper /home/cloudera/join1_mapper.py \   
+   -reducer /home/cloudera/join1_reducer.py
+ 
+#PART 2: A new join problem
+make_join2data.py
+sh make_data_join2.txt
+
+chmod +x join2_mapper.py 
+chmod +x join2_reducer.py
